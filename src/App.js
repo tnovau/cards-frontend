@@ -1,26 +1,22 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import { AddCardButton } from './components/AddCardButton';
+import { AddCardForm } from './containers/AddCardForm';
+
+const SHOW_ADD_FORM = 'ADD';
+const SHOW_LIST = 'LIST';
 
 function App() {
+  const [showing, setShowing] = useState(SHOW_LIST);
+
   return (
     <div className="App">
       <CssBaseline />
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <main className="App-main">
+        {showing === SHOW_ADD_FORM ? <AddCardForm onFormSubmitFinished={() => setShowing(SHOW_LIST)} /> : undefined}
+        {showing === SHOW_LIST ? <AddCardButton onClick={() => setShowing(SHOW_ADD_FORM)} /> : undefined}
+      </main>
     </div>
   );
 }

@@ -15,16 +15,22 @@ const calculateDescriptionError = descriptionArg => !descriptionArg ? DESCRIPTIO
 /** @type {import('react').FC<{
  *  buttonText: string,
  *  headingText: string,
- *  onFormSubmit: ({ title: string, description: string, imageUrl: string }) => void
+ *  onFormSubmit: ({ title: string, description: string, imageUrl: string }) => void,
+ *  onFormSubmitFinished: () => void,
+ *  title?: string,
+ *  description?: string,
+ *  imageUrl?: string
  * }>} */
 export const CardForm = ({
   buttonText,
   headingText,
-  onFormSubmit
+  onFormSubmit,
+  onFormSubmitFinished,
+  ...rest
 }) => {
-  const [title, setTitle] = useState(INITIAL_FIELD_VALUE);
-  const [description, setDescription] = useState(INITIAL_FIELD_VALUE);
-  const [imageUrl, setImageUrl] = useState(INITIAL_FIELD_VALUE);
+  const [title, setTitle] = useState(rest.title || INITIAL_FIELD_VALUE);
+  const [description, setDescription] = useState(rest.description || INITIAL_FIELD_VALUE);
+  const [imageUrl, setImageUrl] = useState(rest.imageUrl || INITIAL_FIELD_VALUE);
 
   const [titleError, setTitleError] = useState(INITIAL_ERROR_VALUE);
   const [descriptionError, setDescriptionError] = useState(INITIAL_ERROR_VALUE);
@@ -53,6 +59,8 @@ export const CardForm = ({
         setImageUrl(INITIAL_FIELD_VALUE);
         setTitleError(INITIAL_ERROR_VALUE);
         setDescriptionError(INITIAL_ERROR_VALUE);
+
+        onFormSubmitFinished();
       }}
       noValidate
     >

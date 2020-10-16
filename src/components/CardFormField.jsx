@@ -5,11 +5,11 @@ import TextField from '@material-ui/core/TextField';
 export const CardFormField = ({
   id,
   ...rest
-}) => {
-  return <TextField
+}) => (
+  <TextField
     data-testid={id}
     id={id}
     name={id}
     {...rest}
   />
-}
+);

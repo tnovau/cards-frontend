@@ -10,12 +10,15 @@
     "@testing-library/user-event": "^7.2.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-scripts": "3.4.3"
+    "react-redux": "^7.2.1",
+    "react-scripts": "3.4.3",
+    "redux": "4.0.5",
+    "uuid": "8.3.1"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --verbose",
     "test:ci": "react-scripts test --coverage",
     "eject": "react-scripts eject"
   },
@@ -44,7 +47,8 @@
       "!<rootDir>/node_modules/",
       "!<rootDir>/src/serviceWorker.js",
       "!<rootDir>/src/index.js",
-      "!<rootDir>/src/setupProxy.js"
+      "!<rootDir>/src/setupProxy.js",
+      "!<rootDir>/src/store.js"
     ]
   }
 }

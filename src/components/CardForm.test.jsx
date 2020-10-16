@@ -22,11 +22,21 @@ describe('[CardForm]', () => {
 
   const CARD_FORM_ID = 'card-form';
 
-  const renderCardForm = (onFormSubmit = jest.fn()) => render(
+  const renderCardForm = (
+    onFormSubmit = jest.fn(),
+    onFormSubmitFinished = jest.fn(),
+    title,
+    description,
+    imageUrl
+  ) => render(
     <CardForm
       buttonText={CARD_FORM_BUTTON_TEXT}
       headingText={CARD_FORM_HEADING_TEXT}
       onFormSubmit={onFormSubmit}
+      title={title}
+      description={description}
+      imageUrl={imageUrl}
+      onFormSubmitFinished={onFormSubmitFinished}
     />
   );
 
@@ -72,7 +82,8 @@ describe('[CardForm]', () => {
       [CARD_TITLE_TEXT, CARD_TITLE_ID],
       [CARD_DESCRIPTION_TEXT, CARD_DESCRIPTION_ID],
       [CARD_IMAGE_URL_TEXT, CARD_IMAGE_URL_ID],
-    ])(`should ask the user for a "${CARD_TITLE_TEXT}"`, (text, id) => {
+    ])(`should ask the user for a %s`, (text, id) => {
+
       const { getByLabelText } = renderCardForm();
 
       const input = getByLabelText(text);
@@ -84,12 +95,24 @@ describe('[CardForm]', () => {
     it.each([
       [CARD_TITLE_TEXT, CARD_TITLE_ERROR_MESSAGE],
       [CARD_DESCRIPTION_TEXT, CARD_DESCRIPTION_ERROR_MESSAGE]
-    ])('should show error message when text field is empty on blur', (labelText, errorMessage) => {
+    ])('should show error message when %s is empty on blur', (labelText, errorMessage) => {
       const { getByLabelText, getByText } = renderCardForm();
 
       focusAndBlurInput(getByLabelText, labelText);
 
       expect(getByText(errorMessage)).toBeInTheDocument();
+    });
+
+    it('should render with values passed as props', () => {
+      const titleValue = 'Some title';
+      const descriptionValue = 'Some description';
+      const imageUrlValue = 'http://localhost:3000';
+
+      const { getByLabelText } = renderCardForm(jest.fn(), jest.fn(), titleValue, descriptionValue, imageUrlValue);
+
+      expect(getByLabelText(CARD_TITLE_TEXT).value).toBe(titleValue);
+      expect(getByLabelText(CARD_DESCRIPTION_TEXT).value).toBe(descriptionValue);
+      expect(getByLabelText(CARD_IMAGE_URL_TEXT).value).toBe(imageUrlValue);
     });
   });
 
@@ -99,8 +122,9 @@ describe('[CardForm]', () => {
       const desciptionValue = 'Some description';
       const imageUrlValue = 'http://localhost:3000';
       const onFormSubmit = jest.fn();
+      const onFormSubmitFinished = jest.fn();
 
-      const { getByLabelText, getByTestId } = renderCardForm(onFormSubmit);
+      const { getByLabelText, getByTestId } = renderCardForm(onFormSubmit, onFormSubmitFinished);
 
       fillInputWithValue(getByLabelText, CARD_TITLE_TEXT, titleValue);
       fillInputWithValue(getByLabelText, CARD_DESCRIPTION_TEXT, desciptionValue);
@@ -114,16 +138,18 @@ describe('[CardForm]', () => {
         description: desciptionValue,
         imageUrl: imageUrlValue
       });
+      expect(onFormSubmitFinished).toHaveBeenCalledTimes(1);
     });
 
-    it('should fill all the fields on the form and call onFormSubmit after clicking in submit button', () => {
+    it('should not call onFormSubmit after clicking in submit button when form is empty and it should show error in fields', () => {
       const onFormSubmit = jest.fn();
+      const onFormSubmitFinished = jest.fn();
 
-      const { getByTestId, getByText } = renderCardForm(onFormSubmit);
-
+      const { getByTestId, getByText } = renderCardForm(onFormSubmit, onFormSubmitFinished);
       fireEvent.click(getByTestId(CARD_FORM_BUTTON_ID));
 
       expect(onFormSubmit).toHaveBeenCalledTimes(0);
+      expect(onFormSubmitFinished).toHaveBeenCalledTimes(0);
       expect(getByText(CARD_TITLE_ERROR_MESSAGE)).toBeInTheDocument();
       expect(getByText(CARD_DESCRIPTION_ERROR_MESSAGE)).toBeInTheDocument();
     });
