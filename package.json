@@ -37,5 +37,14 @@
   "devDependencies": {
     "@types/jest": "26.0.14",
     "@types/testing-library__jest-dom": "5.9.4"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx}",
+      "!<rootDir>/node_modules/",
+      "!<rootDir>/src/serviceWorker.js",
+      "!<rootDir>/src/index.js",
+      "!<rootDir>/src/setupProxy.js"
+    ]
   }
 }

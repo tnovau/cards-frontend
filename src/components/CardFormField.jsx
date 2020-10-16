@@ -1,9 +1,7 @@
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
 
-/**
- * @param {import('@material-ui/core/TextField').TextFieldProps} param0
- */
+/** @type {import('react').FC<import('@material-ui/core/TextField').TextFieldProps>} */
 export const CardFormField = ({
   id,
   ...rest
