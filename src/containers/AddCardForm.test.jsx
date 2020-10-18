@@ -1,6 +1,9 @@
 import React from 'react';
 import { fireEvent, render } from '@testing-library/react';
 import { Provider } from 'react-redux';
+import { Router } from 'react-router';
+
+import { createMemoryHistory } from 'history';
 
 import { AddCardForm } from './AddCardForm';
 import { addCard } from '../card-actions';
@@ -23,9 +26,14 @@ describe('[AddCardForm]', () => {
     subscribe: jest.fn()
   })
 
-  const renderCardForm = (store = getMockStore(), onFormSubmitFinished = jest.fn()) => render(
+  const renderCardForm = (
+    store = getMockStore(),
+    memoryHistory = createMemoryHistory()
+  ) => render(
     <Provider store={store}>
-      <AddCardForm onFormSubmitFinished={onFormSubmitFinished} />
+      <Router history={memoryHistory}>
+        <AddCardForm />
+      </Router>
     </Provider>
   );
 
@@ -55,14 +63,13 @@ describe('[AddCardForm]', () => {
   describe('onFormSubmit', () => {
     it('should dispatch add card action', () => {
       const dispatch = jest.fn();
-      const onFormSubmitFinished = jest.fn();
       const mockedStore = getMockStore(dispatch);
 
       const titleValue = 'Some title';
       const descriptionValue = 'Some description';
       const imageUrlValue = 'Some description';
 
-      const { getByLabelText, getByTestId } = renderCardForm(mockedStore, onFormSubmitFinished);
+      const { getByLabelText, getByTestId } = renderCardForm(mockedStore,);
 
       fillInputWithValue(getByLabelText, CARD_TITLE_TEXT, titleValue);
       fillInputWithValue(getByLabelText, CARD_DESCRIPTION_TEXT, descriptionValue);
@@ -75,8 +82,7 @@ describe('[AddCardForm]', () => {
         title: titleValue,
         description: descriptionValue,
         imageUrl: imageUrlValue
-      }))
-      expect(onFormSubmitFinished).toHaveBeenCalledTimes(1);
+      }));
     });
   });
 });

@@ -1,5 +1,9 @@
 import React from 'react';
 import { render } from '@testing-library/react';
+import { Provider } from 'react-redux';
+import { Router } from 'react-router';
+import { createMemoryHistory } from 'history';
+
 import { EditCardForm } from './EditCardForm';
 
 describe('[EditCardForm]', () => {
@@ -9,7 +13,17 @@ describe('[EditCardForm]', () => {
   const CARD_FORM_BUTTON_TEST_ID = 'card-form-button';
   const CARD_FORM_BUTTON_TEXT = 'Editar';
 
-  const renderCardForm = () => render(<EditCardForm />);
+  const renderCardForm = () => render(
+    <Provider store={{
+      dispatch: jest.fn(),
+      getState: () => ({ cards: [] }),
+      subscribe: jest.fn()
+    }}>
+      <Router history={createMemoryHistory()}>
+        <EditCardForm />
+      </Router>
+    </Provider>
+  );
 
   describe('UI', () => {
     it.each([
