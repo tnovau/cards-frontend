@@ -16,7 +16,7 @@ describe('[EditCardForm]', () => {
   const renderCardForm = () => render(
     <Provider store={{
       dispatch: jest.fn(),
-      getState: () => ({ cards: [] }),
+      getState: () => ({ cards: { cards: [] } }),
       subscribe: jest.fn()
     }}>
       <Router history={createMemoryHistory()}>

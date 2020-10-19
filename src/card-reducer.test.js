@@ -11,7 +11,7 @@ describe('[card-reducer]', () => {
   });
 
   it('should return an empty array by default', () => {
-    const cards = cardReducer(undefined, {});
+    const { cards } = cardReducer(undefined, {});
 
     expect(cards).toEqual([]);
   });
@@ -19,7 +19,7 @@ describe('[card-reducer]', () => {
   it('should add a card', () => {
     const mockedCard = getMockedCard();
 
-    const [newCard] = cardReducer([], addCard(mockedCard));
+    const { cards: [newCard] } = cardReducer({ cards: [] }, addCard(mockedCard));
 
     expect(newCard).toEqual(mockedCard);
   });
@@ -28,12 +28,12 @@ describe('[card-reducer]', () => {
     const mockedCard1 = getMockedCard();
     const mockedCard2Id = '2';
     const mockedCard3 = getMockedCard('3');
-    const firstState = cardReducer([], addCard(mockedCard1));
+    const firstState = cardReducer(undefined, addCard(mockedCard1));
     const secondState = cardReducer(firstState, addCard(getMockedCard(mockedCard2Id)));
     const thirdState = cardReducer(secondState, addCard(mockedCard3));
 
     const editedCard2 = getMockedCard(mockedCard2Id, 'Edited Description');
-    const [firstCard, secondCard, thirdCard] = cardReducer(thirdState, editCard(editedCard2));
+    const { cards: [firstCard, secondCard, thirdCard] } = cardReducer(thirdState, editCard(editedCard2));
 
     expect(firstCard).toEqual(mockedCard1);
     expect(editedCard2).toEqual(secondCard);
@@ -46,9 +46,9 @@ describe('[card-reducer]', () => {
     const mockedCard2Id = '2';
     const mockedCard2 = getMockedCard(mockedCard2Id);
 
-    const firstState = cardReducer([], addCard(mockedCard));
+    const firstState = cardReducer(undefined, addCard(mockedCard));
     const secondState = cardReducer(firstState, addCard(mockedCard2));
-    const finalState = cardReducer(secondState, removeCard(mockedCard2Id));
+    const { cards: finalState } = cardReducer(secondState, removeCard(mockedCard2Id));
 
     expect(finalState).toHaveLength(1);
     expect(finalState[0]).toEqual(mockedCard);

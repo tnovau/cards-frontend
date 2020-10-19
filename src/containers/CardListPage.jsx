@@ -9,6 +9,7 @@ import { removeCard } from '../card-actions'
 import { selectCards } from '../card-selectors';
 import { AddCardButton } from '../components/AddCardButton';
 import { CardItem } from '../components/CardItem';
+import { SortCardButtonContainer } from './SortCardsButtonContainer';
 
 const useStyles = makeStyles(() => ({
   gridContainer: {
@@ -27,6 +28,7 @@ export const CardListPage = () => {
     <>
       {cards.length ?
         <div className={gridContainer}>
+          <SortCardButtonContainer />
           <Grid
             spacing={3}
             container

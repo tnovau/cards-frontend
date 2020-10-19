@@ -3,6 +3,7 @@ const CARD_FEATURE = 'card'
 export const ADD_CARD = `${CARD_FEATURE}/ADD`;
 export const EDIT_CARD = `${CARD_FEATURE}/EDIT`;
 export const REMOVE_CARD = `${CARD_FEATURE}/REMOVE`;
+export const TOGGLE_SORT_CARD = `${CARD_FEATURE}/TOGGLE_SORT`;
 
 /**
  * @param {import('./card').Card} payload
@@ -28,4 +29,8 @@ export const removeCard = id => ({
   payload: {
     id
   }
+});
+
+export const toggleSortCards = () => ({
+  type: TOGGLE_SORT_CARD
 });

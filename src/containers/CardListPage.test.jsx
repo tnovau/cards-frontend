@@ -16,7 +16,7 @@ describe('[CardListPage]', () => {
   const renderCardListPage = (cards = [], memoryHistory = createMemoryHistory()) => render(
     <Provider store={{
       dispatch: jest.fn(),
-      getState: () => ({ cards }),
+      getState: () => ({ cards: { cards } }),
       subscribe: jest.fn()
     }}>
       <Router history={memoryHistory}>

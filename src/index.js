@@ -4,13 +4,19 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
 import { createCardsFrontendStore } from './store';
+import CircularProgress from '@material-ui/core/CircularProgress';
+
+const { store, persistor } = createCardsFrontendStore();
 
 ReactDOM.render(
   <React.StrictMode>
     <Router>
-      <Provider store={createCardsFrontendStore()}>
-        <App />
+      <Provider store={store}>
+        <PersistGate loading={<CircularProgress size={24} />} persistor={persistor}>
+          <App />
+        </PersistGate>
       </Provider>
     </Router>
   </React.StrictMode>,
